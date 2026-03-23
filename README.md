@@ -1,6 +1,8 @@
-# Recipe Pipeline
+# Recipe Pipeline (`ggm-py-cs`)
 
 Pipeline di automazione per la generazione di ricette 3D nel gioco **Restaurant Roguelite** (Unity 6.3 LTS).
+
+> **Utilizzo consigliato**: tramite la web UI **ggm-fe** che lancia questo script automaticamente, gestisce le API key e mostra i log in realtime. Vedi il repo `ggm-fe` per il setup completo.
 
 ## Panoramica
 
@@ -59,7 +61,9 @@ pip install -r requirements.txt
 
 ### API Key necessarie
 
-Aprire `pipeline.py` e inserire le chiavi nelle prime righe:
+**Se usi ggm-fe**: le chiavi vengono passate automaticamente come variabili d'ambiente (`GGM_GEMINI_KEY`, `GGM_REMOVEBG_KEY`, `GGM_MESHY_KEY`, `GGM_UNITY_ASSETS`). Configurale una volta sola in Settings.
+
+**Se usi da riga di comando**: aprire `pipeline.py` e inserire le chiavi nelle prime righe:
 
 | Variabile | Servizio | Note |
 |---|---|---|
@@ -67,29 +71,22 @@ Aprire `pipeline.py` e inserire le chiavi nelle prime righe:
 | `REMOVE_BG_API_KEY` | remove.bg | Per rimozione sfondo |
 | `MESHY_API_KEY` | Meshy AI | Per generazione 3D |
 
-### Generazione immagine
-
-La generazione automatica via API Gemini richiede billing attivo su Google Cloud.
-**Alternativa consigliata**: generare l'immagine manualmente su [gemini.google.com](https://gemini.google.com) e passarla come secondo argomento.
-
-## Utilizzo
+## Utilizzo standalone (riga di comando)
 
 ```bash
-cd C:\Users\marco\recipe_pipeline
-
 # Con immagine già pronta (consigliato)
 python pipeline.py NomeRicetta "C:\percorso\immagine.png"
 
-# Con generazione automatica via API (richiede billing)
+# Con generazione automatica via API (richiede billing Gemini)
 python pipeline.py NomeRicetta
 ```
 
 ### Esempi
 
 ```bash
-python pipeline.py Fries "C:\Users\marco\Downloads\Fries.png"
-python pipeline.py Fish_And_Chips "C:\Users\marco\Downloads\Fish_And_Chips.png"
-python pipeline.py Beer "C:\Users\marco\Downloads\Beer.png"
+python pipeline.py Fries "C:\Users\...\Downloads\Fries.png"
+python pipeline.py Fish_And_Chips "C:\Users\...\Downloads\Fish_And_Chips.png"
+python pipeline.py Beer "C:\Users\...\Downloads\Beer.png"
 ```
 
 ## Tipi di ricetta supportati

@@ -6,6 +6,10 @@ Guida per Claude Code quando lavora in questo repository.
 
 Script Python che automatizza la creazione di ricette 3D per il gioco **Restaurant Roguelite** (Unity 6.3 LTS, URP, DX12).
 
+**Nota**: questo script viene normalmente invocato dalla web UI **ggm-fe** (`C:\Users\Denni\Documents\Claude\ggm\ggm-fe`), che gestisce API key, immagini, log in realtime e batch processing. Le API key vengono passate come variabili d'ambiente dal frontend (`GGM_GEMINI_KEY`, `GGM_REMOVEBG_KEY`, `GGM_MESHY_KEY`, `GGM_UNITY_ASSETS`), non sono più hardcoded nel file.
+
+Il gioco si trova in `C:\Users\marco\Progetto\` — repository separato con il suo CLAUDE.md.
+
 Il gioco si trova in `C:\Users\marco\Progetto\` — repository separato con il suo CLAUDE.md.
 
 ## File principali
@@ -91,13 +95,18 @@ Quando Unity rileva `recipe_meta.json`:
 9. Aggiunge ricetta a RecipePool (baseRecipes + recipes/draftPool)
 10. Assegna RecipeDataSO al campo `recipeData` di CookedDish nel prefab
 
-## API Keys (in pipeline.py righe 21-23)
+## API Keys
 
-- `GEMINI_API_KEY` — Google AI Studio, usato solo per classificazione tipo (gratuito)
-- `REMOVE_BG_API_KEY` — remove.bg
-- `MESHY_API_KEY` — Meshy AI
+Lo script legge le chiavi da variabili d'ambiente (quando lanciato da ggm-fe):
 
-Generazione immagine via Gemini API richiede billing. Consigliato: passare immagine manualmente.
+| Env var | Servizio |
+|---|---|
+| `GGM_GEMINI_KEY` | Google Gemini — classificazione tipo ricetta |
+| `GGM_REMOVEBG_KEY` | remove.bg — rimozione sfondo |
+| `GGM_MESHY_KEY` | Meshy AI — generazione 3D |
+| `GGM_UNITY_ASSETS` | Percorso locale della cartella `Assets/` Unity |
+
+Se queste variabili non sono presenti, il codice fallback sulle costanti hardcoded in `pipeline.py` righe 21-23 (usare solo per test locali standalone).
 
 ## Gotcha importanti
 
