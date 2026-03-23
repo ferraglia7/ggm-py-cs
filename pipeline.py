@@ -18,11 +18,11 @@ from pathlib import Path
 
 # ─── CONFIGURATION ────────────────────────────────────────────────────────────
 
-GEMINI_API_KEY    = "AIzaSyBumwpNBea2ADaCvEyWC6Dt587xy8cnkrU"
-REMOVE_BG_API_KEY = "xbqedDzHLAmxsF5zcuHLMt6j"
-MESHY_API_KEY     = "msy_w3ezW1yAYJjbYkMB031BhW3RxLBqGwLTSfwE"
+GEMINI_API_KEY    = os.environ.get("GGM_GEMINI_KEY")    or "AIzaSyBumwpNBea2ADaCvEyWC6Dt587xy8cnkrU"
+REMOVE_BG_API_KEY = os.environ.get("GGM_REMOVEBG_KEY")  or "xbqedDzHLAmxsF5zcuHLMt6j"
+MESHY_API_KEY     = os.environ.get("GGM_MESHY_KEY")     or "msy_w3ezW1yAYJjbYkMB031BhW3RxLBqGwLTSfwE"
 
-UNITY_ASSETS      = Path(r"C:\Users\marco\Progetto\Assets")
+UNITY_ASSETS      = Path(os.environ.get("GGM_UNITY_ASSETS") or r"C:\Users\marco\Progetto\Assets")
 RECIPES_PATH      = UNITY_ASSETS / "Prefabs" / "Recipes"
 UI_IMAGES_PATH    = UNITY_ASSETS / "UI" / "Images"
 
@@ -125,11 +125,14 @@ def _upload_image(image_bytes: bytes) -> str:
     response = requests.post(
         "https://catbox.moe/user/api.php",
         data={"reqtype": "fileupload"},
-        files={"fileToUpload": ("image.png", image_bytes, "image/png")}
+        files={"fileToUpload": ("image.png", image_bytes, "image/png")},
+        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"},
     )
     if response.status_code != 200:
         raise RuntimeError(f"Upload failed {response.status_code}: {response.text}")
     url = response.text.strip()
+    if not url.startswith("http"):
+        raise RuntimeError(f"Upload returned unexpected response: {response.text!r}")
     print(f"[Upload] URL: {url}")
     return url
 
