@@ -1,2 +1,4 @@
 google-genai>=1.0.0
 requests>=2.31.0
+# Optional: anthropic SDK (can also use direct HTTP like the steps do)
+# anthropic>=0.20.0

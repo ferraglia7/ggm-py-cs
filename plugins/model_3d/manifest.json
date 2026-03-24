@@ -1,0 +1,38 @@
+{
+  "id": "model_3d",
+  "name": "Model 3D",
+  "description": "Generate a 3D model from an image or text prompt, import into Unity as prefab",
+  "runtime": "python",
+  "supports2D": false,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",        "type": "string", "label": "Asset name",     "required": true,  "hint": "e.g. Sword, Chest, Potion" },
+    { "id": "imagePath",   "type": "image",  "label": "Source image",   "required": false, "hint": "PNG with transparent background preferred" },
+    { "id": "prompt",      "type": "string", "label": "Text prompt",    "required": false, "hint": "Used if no image provided, or to refine generation" }
+  ],
+  "steps": [
+    { "id": "remove_bg",       "label": "Remove background",       "autoRun": true },
+    { "id": "classify",        "label": "Classify asset type",     "autoRun": true },
+    { "id": "generate_3d",     "label": "Generate 3D model",       "autoRun": true },
+    { "id": "remesh",          "label": "Remesh (optimize poly)",  "autoRun": true,  "optional": true },
+    { "id": "download_assets", "label": "Download FBX + textures", "autoRun": true },
+    { "id": "unity_import",    "label": "Import into Unity",       "autoRun": true }
+  ],
+  "providers": {
+    "model_3d": {
+      "default": "meshy",
+      "fallback": "meshy",
+      "options": ["meshy", "tripo3d", "hunyuan3d2", "sf3d", "triposr", "instantmesh", "shape_e"]
+    },
+    "remove_bg": {
+      "default": "rembg",
+      "fallback": "removebg_api",
+      "options": ["rembg", "removebg_api"]
+    }
+  },
+  "outputs": [
+    { "id": "prefabPath",    "type": "string", "label": "Unity prefab path" },
+    { "id": "iconPath",      "type": "string", "label": "Icon PNG path" },
+    { "id": "assetType",     "type": "string", "label": "Classified asset type" }
+  ]
+}

@@ -4,7 +4,13 @@ Guida per Claude Code quando lavora in questo repository.
 
 ## Cos'è questo progetto
 
-Script Python che automatizza la creazione di ricette 3D per il gioco **Restaurant Roguelite** (Unity 6.3 LTS, URP, DX12).
+**ggm-py-cs** è il backend Python+C# di GGM. Contiene:
+- `runner.py` — orchestratore generico plugin step-based
+- `engines/unity.py` — adapter Unity (paths, batch mode, version detection)
+- `plugins/` — plugin atomici con steps indipendenti
+- `pipeline.py` — script legacy per il flusso ricette 3D originale (ancora funzionante)
+
+Versione SPEC: 2.3 — vedere `../SPEC.md` per la documentazione completa.
 
 **Nota**: questo script viene normalmente invocato dalla web UI **ggm-fe** (`C:\Users\Denni\Documents\Claude\ggm\ggm-fe`), che gestisce API key, immagini, log in realtime e batch processing. Le API key vengono passate come variabili d'ambiente dal frontend (`GGM_GEMINI_KEY`, `GGM_REMOVEBG_KEY`, `GGM_MESHY_KEY`, `GGM_UNITY_ASSETS`), non sono più hardcoded nel file.
 

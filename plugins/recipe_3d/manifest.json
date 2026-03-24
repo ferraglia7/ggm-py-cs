@@ -1,0 +1,22 @@
+{
+  "id": "recipe_3d",
+  "name": "Recipe 3D",
+  "description": "Thin wrapper on model_3d for game recipes — adds RecipeDataSO creation via RecipeImporter.cs",
+  "runtime": "python",
+  "supports2D": false,
+  "supports3D": true,
+  "extends": "model_3d",
+  "inputs": [
+    { "id": "name",      "type": "string", "label": "Recipe name",   "required": true,  "hint": "e.g. Sword, Soda, Meatballs" },
+    { "id": "imagePath", "type": "image",  "label": "Source image",  "required": false }
+  ],
+  "steps": [
+    { "id": "remove_bg",       "label": "Remove background",           "autoRun": true },
+    { "id": "classify",        "label": "Classify recipe type",         "autoRun": true },
+    { "id": "generate_3d",     "label": "Generate 3D model",           "autoRun": true },
+    { "id": "remesh",          "label": "Remesh (optimize poly)",       "autoRun": true, "optional": true },
+    { "id": "download_assets", "label": "Download FBX + textures",      "autoRun": true },
+    { "id": "unity_import",    "label": "Import + create RecipeDataSO", "autoRun": true }
+  ],
+  "note": "Uses model_3d steps directly. The unity_import step calls RecipeImporter.cs which creates prefab + RecipeDataSO + MinigameConfig."
+}

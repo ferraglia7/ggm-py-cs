@@ -375,6 +375,17 @@ def main():
     print(f"  Prefab: Assets/Prefabs/Recipes/{recipe_name}/{recipe_name}.prefab")
     print(f"{'='*50}\n")
 
+    # Emit file list for the frontend run tracker (must be last line on success)
+    python_files = [
+        _to_unity_path(assets["fbx"]),
+        _to_unity_path(assets["base"]),
+        _to_unity_path(assets["metallic"]),
+        _to_unity_path(assets["normal"]),
+        icon_unity_path,
+        f"Assets/Prefabs/Recipes/{recipe_name}/recipe_meta.json",
+    ]
+    print(f"[FILES] {json.dumps([f for f in python_files if f])}")
+
 
 if __name__ == "__main__":
     main()
