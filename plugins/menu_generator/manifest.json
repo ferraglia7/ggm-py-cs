@@ -1,0 +1,33 @@
+{
+  "id": "menu_generator",
+  "name": "Menu Generator",
+  "description": "Generates MainMenu, PauseMenu, HUD with wired-up C# controller based on game-design.md",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",            "type": "string",  "label": "Menu name",        "required": true,  "hint": "e.g. MainMenu, PauseMenu, HUD" },
+    { "id": "menuType",        "type": "select",  "label": "Menu type",         "required": true,  "options": ["MainMenu", "PauseMenu", "HUD", "Settings", "Custom"] },
+    { "id": "includeSettings", "type": "boolean", "label": "Include Settings",  "required": false, "default": true },
+    { "id": "visualStyle",     "type": "string",  "label": "Visual style",      "required": false, "hint": "Leave empty to auto-detect from game-design.md" },
+    { "id": "buttons",         "type": "array",   "label": "Buttons (optional)", "required": false, "hint": "Leave empty to auto-generate from menu type" }
+  ],
+  "steps": [
+    { "id": "read_context",      "label": "Read game-design.md + architecture.md", "autoRun": true },
+    { "id": "generate_layout",   "label": "Generate UI layout (LLM)",              "autoRun": true },
+    { "id": "generate_cs",       "label": "Generate C# controller (LLM)",          "autoRun": true },
+    { "id": "unity_import",      "label": "Import UXML + C# into Unity",           "autoRun": true }
+  ],
+  "providers": {
+    "llm": {
+      "default": "claude",
+      "fallback": "ollama",
+      "options": ["claude", "gemini", "openai", "ollama"]
+    }
+  },
+  "outputs": [
+    { "id": "uxmlPath",      "type": "string", "label": "UXML layout path in Unity" },
+    { "id": "csPath",        "type": "string", "label": "C# controller path in Unity" },
+    { "id": "prefabPath",    "type": "string", "label": "Menu prefab path in Unity" }
+  ]
+}

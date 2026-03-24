@@ -1,0 +1,40 @@
+{
+  "id": "audio_manager",
+  "name": "Audio Manager",
+  "description": "Generates music/SFX and scaffolds AudioManager in Unity",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",       "type": "string", "label": "Track name",   "required": true,  "hint": "e.g. MainTheme, BattleMusic, CoinPickup" },
+    { "id": "audioType",  "type": "select", "label": "Audio type",   "required": true,  "options": ["music", "sfx", "voice", "ambient"] },
+    { "id": "prompt",     "type": "string", "label": "Description",  "required": false, "hint": "e.g. 'epic orchestral battle theme', 'coin pickup jingle'" },
+    { "id": "duration",   "type": "number", "label": "Duration (s)", "required": false, "default": 30, "hint": "For music; SFX are shorter automatically" }
+  ],
+  "steps": [
+    { "id": "read_context",    "label": "Read game-design.md",          "autoRun": true },
+    { "id": "generate_audio",  "label": "Generate audio (AI)",          "autoRun": true },
+    { "id": "post_process",    "label": "Post-process & normalize",     "autoRun": true },
+    { "id": "unity_import",    "label": "Import into Unity + AudioClip","autoRun": true }
+  ],
+  "providers": {
+    "music": {
+      "default": "musicgen",
+      "fallback": "suno",
+      "options": ["musicgen", "suno", "udio"]
+    },
+    "sfx": {
+      "default": "audiogen",
+      "fallback": "elevenlabs",
+      "options": ["audiogen", "elevenlabs"]
+    },
+    "voice": {
+      "default": "coqui",
+      "fallback": "elevenlabs",
+      "options": ["coqui", "piper", "elevenlabs"]
+    }
+  },
+  "outputs": [
+    { "id": "audioPath", "type": "string", "label": "Unity audio clip path" }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "texture_generator",
+  "name": "Texture Generator",
+  "description": "Generates seamless textures, skyboxes and tileable materials for Unity URP",
+  "runtime": "python",
+  "supports2D": false,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",          "type": "string", "label": "Texture name",  "required": true,  "hint": "e.g. StoneWall, WoodFloor, NightSky" },
+    { "id": "textureType",   "type": "select", "label": "Texture type",  "required": true,  "options": ["albedo", "normal", "roughness", "skybox", "tileset"] },
+    { "id": "prompt",        "type": "string", "label": "Description",   "required": false, "hint": "e.g. 'mossy stone wall, medieval style, 1024x1024'" },
+    { "id": "resolution",    "type": "select", "label": "Resolution",    "required": false, "options": ["512", "1024", "2048"], "default": "1024" },
+    { "id": "seamless",      "type": "boolean","label": "Seamless tile", "required": false, "default": true }
+  ],
+  "steps": [
+    { "id": "read_context",     "label": "Read game-design.md",          "autoRun": true },
+    { "id": "generate_texture", "label": "Generate texture (AI)",        "autoRun": true },
+    { "id": "post_process",     "label": "Make seamless + mip maps",     "autoRun": true },
+    { "id": "unity_import",     "label": "Import + create Material",     "autoRun": true }
+  ],
+  "providers": {
+    "image": {
+      "default": "comfyui",
+      "fallback": "stability",
+      "options": ["comfyui", "flux", "stability", "gemini"]
+    }
+  },
+  "outputs": [
+    { "id": "albedoPath",   "type": "string", "label": "Albedo texture path" },
+    { "id": "materialPath", "type": "string", "label": "URP Material path" }
+  ]
+}
