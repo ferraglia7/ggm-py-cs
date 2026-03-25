@@ -4,6 +4,7 @@ Generates Unity UI Toolkit UXML layout for the menu using an LLM.
 """
 
 import os
+import re
 import requests
 import json
 
@@ -49,6 +50,8 @@ Architecture context (for class/namespace naming):
 Generate the UXML file."""
 
     uxml_content = _llm_call(UXML_SYSTEM, prompt)
+    uxml_content = re.sub(r"```(?:xml|uxml)?\s*\n?", "", uxml_content, flags=re.IGNORECASE)
+    uxml_content = re.sub(r"\n?```\s*$", "", uxml_content).strip()
 
     # Save UXML to temp location in .ggm/
     from pathlib import Path

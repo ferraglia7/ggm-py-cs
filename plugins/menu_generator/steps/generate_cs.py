@@ -4,6 +4,7 @@ Generates C# MonoBehaviour controller for the menu using an LLM.
 """
 
 import os
+import re
 import requests
 from pathlib import Path
 
@@ -44,6 +45,8 @@ Game design context:
 Generate the C# controller."""
 
     cs_content = _llm_call(CS_SYSTEM, prompt)
+    cs_content = re.sub(r"```(?:csharp|cs|c#)?\s*\n?", "", cs_content, flags=re.IGNORECASE)
+    cs_content = re.sub(r"\n?```\s*$", "", cs_content).strip()
 
     tmp_dir = Path(project_path) / ".ggm" / "tmp" / menu_name
     tmp_dir.mkdir(parents=True, exist_ok=True)
