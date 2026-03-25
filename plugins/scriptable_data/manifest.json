@@ -1,0 +1,26 @@
+{
+  "id": "scriptable_data",
+  "name": "Scriptable Data",
+  "description": "Generate a ScriptableObject C# class and .asset instance from a schema. AI designs the schema if no fields are provided.",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",        "type": "string", "label": "SO class name",   "required": true,  "hint": "e.g. WeaponDataSO, EnemyConfigSO" },
+    { "id": "description", "type": "string", "label": "Description",     "required": false, "hint": "What data this ScriptableObject stores" },
+    { "id": "fields",      "type": "json",   "label": "Fields (JSON)",   "required": false, "hint": "Array of {name, type, default, hint} — leave empty to let AI design" },
+    { "id": "namespace",   "type": "string", "label": "C# Namespace",    "required": false, "default": "RestaurantRoguelite.Data", "hint": "e.g. RestaurantRoguelite.Data" },
+    { "id": "createAsset", "type": "boolean","label": "Create .asset instance", "default": true }
+  ],
+  "steps": [
+    { "id": "read_context",  "label": "Read game context",   "autoRun": true },
+    { "id": "design_schema", "label": "Design schema with AI","autoRun": true },
+    { "id": "generate_cs",   "label": "Generate C# class",   "autoRun": true },
+    { "id": "unity_import",  "label": "Import into Unity",   "autoRun": true }
+  ],
+  "outputs": [
+    { "id": "scriptPath", "type": "string", "label": "Unity script path" },
+    { "id": "assetPath",  "type": "string", "label": "Unity .asset path" },
+    { "id": "fields",     "type": "json",   "label": "Final schema fields" }
+  ]
+}

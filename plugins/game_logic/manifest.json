@@ -1,0 +1,28 @@
+{
+  "id": "game_logic",
+  "name": "Game Logic",
+  "description": "Generate or patch C# MonoBehaviour / ScriptableObject scripts using AI. Supports full generation and targeted patching of existing files.",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",           "type": "string", "label": "Script name",        "required": true,  "hint": "e.g. PlayerHealthManager, ComboSystem" },
+    { "id": "description",    "type": "string", "label": "What it should do",  "required": true,  "hint": "Describe the behaviour in plain English" },
+    { "id": "targetScript",   "type": "string", "label": "Existing script path","required": false, "hint": "Relative to Assets/ — leave blank to generate new" },
+    { "id": "baseClass",      "type": "select", "label": "Base class",         "required": false, "default": "MonoBehaviour", "options": ["MonoBehaviour", "ScriptableObject", "None"] },
+    { "id": "namespace",      "type": "string", "label": "C# Namespace",       "required": false, "default": "RestaurantRoguelite" },
+    { "id": "llmProvider",    "type": "select", "label": "LLM provider",       "required": false, "default": "auto", "options": ["auto", "ollama", "claude", "gemini"] }
+  ],
+  "steps": [
+    { "id": "read_context",  "label": "Read game context",    "autoRun": true },
+    { "id": "read_existing", "label": "Read existing script", "autoRun": true, "optional": true },
+    { "id": "generate_code", "label": "Generate C# code",     "autoRun": true },
+    { "id": "validate",      "label": "Validate syntax",      "autoRun": true, "optional": true },
+    { "id": "unity_import",  "label": "Write to Unity",       "autoRun": true }
+  ],
+  "outputs": [
+    { "id": "scriptPath", "type": "string", "label": "Unity script path" },
+    { "id": "code",       "type": "string", "label": "Generated C# code" },
+    { "id": "diff",       "type": "string", "label": "Unified diff (patch mode)" }
+  ]
+}

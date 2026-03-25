@@ -1,0 +1,28 @@
+{
+  "id": "sprite_importer",
+  "name": "Sprite Importer",
+  "description": "Import and process 2D sprites: remove background, slice sprite sheets, optimize, and import into Unity.",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": false,
+  "inputs": [
+    { "id": "name",        "type": "string",  "label": "Sprite name",       "required": true,  "hint": "e.g. HeroIdle, CoinSheet" },
+    { "id": "imagePath",   "type": "image",   "label": "Source image",      "required": true,  "hint": "PNG or JPG — sprite or sprite sheet" },
+    { "id": "removeBg",    "type": "boolean", "label": "Remove background", "default": true },
+    { "id": "sliceMode",   "type": "select",  "label": "Slice mode",        "required": false, "default": "none", "options": ["none", "grid", "auto"] },
+    { "id": "cellWidth",   "type": "string",  "label": "Cell width (px)",   "required": false, "default": "64",   "hint": "Used in grid slice mode" },
+    { "id": "cellHeight",  "type": "string",  "label": "Cell height (px)",  "required": false, "default": "64",   "hint": "Used in grid slice mode" },
+    { "id": "pixelsPerUnit","type": "string", "label": "Pixels per unit",   "required": false, "default": "100" },
+    { "id": "filterMode",  "type": "select",  "label": "Filter mode",       "required": false, "default": "Point", "options": ["Point", "Bilinear", "Trilinear"] }
+  ],
+  "steps": [
+    { "id": "remove_bg",    "label": "Remove background",     "autoRun": true },
+    { "id": "slice",        "label": "Slice sprite sheet",    "autoRun": true },
+    { "id": "optimize",     "label": "Optimize (resize/compress)", "autoRun": true, "optional": true },
+    { "id": "unity_import", "label": "Import into Unity",    "autoRun": true }
+  ],
+  "outputs": [
+    { "id": "spritePath",  "type": "string", "label": "Unity sprite path" },
+    { "id": "sliceCount",  "type": "int",    "label": "Number of sprites sliced" }
+  ]
+}

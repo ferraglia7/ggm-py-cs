@@ -1,0 +1,27 @@
+{
+  "id": "localization",
+  "name": "Localization",
+  "description": "Generate and translate Unity string tables with AI. Supports generating new tables from game context, translating existing tables, or extracting hardcoded strings.",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",            "type": "string", "label": "Table name",        "required": true,  "hint": "e.g. UI, Dialogue, Items" },
+    { "id": "mode",            "type": "select", "label": "Mode",              "required": true,  "default": "generate", "options": ["generate", "translate", "extract"] },
+    { "id": "sourceLanguage",  "type": "string", "label": "Source language",   "required": false, "default": "en",       "hint": "ISO 639-1 code: en, it, fr, de, ja" },
+    { "id": "targetLanguages", "type": "string", "label": "Target languages",  "required": false, "default": "it,fr,de", "hint": "Comma-separated ISO codes" },
+    { "id": "tableScope",      "type": "string", "label": "Scope / category",  "required": false, "hint": "e.g. 'main menu', 'cooking', 'dialogue' — guides AI generation" },
+    { "id": "existingCsv",     "type": "string", "label": "Existing CSV path", "required": false, "hint": "Assets-relative path to translate or extend" }
+  ],
+  "steps": [
+    { "id": "read_context",     "label": "Read game context",      "autoRun": true },
+    { "id": "generate_strings", "label": "Generate source strings","autoRun": true },
+    { "id": "translate",        "label": "Translate strings",      "autoRun": true },
+    { "id": "unity_import",     "label": "Import into Unity",      "autoRun": true }
+  ],
+  "outputs": [
+    { "id": "tablePath",    "type": "string", "label": "Primary CSV path" },
+    { "id": "stringCount",  "type": "int",    "label": "Total strings" },
+    { "id": "languages",    "type": "json",   "label": "All language codes" }
+  ]
+}
