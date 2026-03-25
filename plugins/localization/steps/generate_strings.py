@@ -153,6 +153,13 @@ Generate 20-40 strings covering all UI text, labels, buttons, messages for this 
     print(f"[generate_strings] Asking LLM to generate strings for scope '{scope}'")
     raw = _call_llm(prompt)
     raw = re.sub(r"```(?:json)?\s*", "", raw).strip().rstrip("`").strip()
-    entries = json.loads(raw)
+    try:
+        entries = json.loads(raw)
+        if not isinstance(entries, list):
+            raise ValueError(f"Expected JSON array, got {type(entries).__name__}")
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f"[generate_strings] JSON parse failed ({e}), using fallback entries")
+        prefix = scope.upper().replace(" ", "_")
+        entries = [{"key": f"{prefix}_PLACEHOLDER_{i}", "value": f"[{scope} {i}]"} for i in range(1, 4)]
     print(f"[generate_strings] Generated {len(entries)} strings")
     return {"entries": entries, "mode": mode}

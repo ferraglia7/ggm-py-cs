@@ -105,6 +105,16 @@ def _call_llm(prompt: str) -> str:
     raise RuntimeError("No LLM provider available for schema design")
 
 
+def _fallback_fields(name: str, description: str) -> list:
+    """Minimal fallback schema when LLM is unavailable or returns invalid JSON."""
+    return [
+        {"name": "displayName",  "type": "string", "defaultValue": '""',    "hint": f"Display name for this {name}",    "isArray": False},
+        {"name": "description",  "type": "string", "defaultValue": '""',    "hint": description or "Description",       "isArray": False},
+        {"name": "value",        "type": "float",  "defaultValue": "0.0f",  "hint": "Primary numeric value",            "isArray": False},
+        {"name": "isEnabled",    "type": "bool",   "defaultValue": "true",  "hint": "Whether this entry is active",     "isArray": False},
+    ]
+
+
 def run(ctx: dict) -> dict:
     inputs  = ctx["inputs"]
     outputs = ctx["outputs"]
@@ -134,11 +144,23 @@ Game context (excerpt):
 Design the fields for this ScriptableObject."""
 
     print(f"[design_schema] Asking LLM to design schema for '{name}'")
-    raw = _call_llm(prompt)
+    try:
+        raw = _call_llm(prompt)
+    except RuntimeError as e:
+        print(f"[design_schema] All LLM providers failed: {e}")
+        print(f"[design_schema] Using fallback schema for '{name}'")
+        return {"fields": _fallback_fields(name, description), "aiDesigned": False, "fallback": True}
 
     # Strip markdown fences if present
     raw = re.sub(r"```(?:json)?\s*", "", raw).strip().rstrip("`").strip()
 
-    fields = json.loads(raw)
+    try:
+        fields = json.loads(raw)
+        if not isinstance(fields, list):
+            raise ValueError(f"Expected JSON array, got {type(fields).__name__}")
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f"[design_schema] JSON parse failed ({e}), using fallback schema")
+        return {"fields": _fallback_fields(name, description), "aiDesigned": False, "fallback": True}
+
     print(f"[design_schema] AI designed {len(fields)} fields")
     return {"fields": fields, "aiDesigned": True}
