@@ -1,0 +1,28 @@
+{
+  "id": "tilemap_populator",
+  "name": "Tilemap Populator",
+  "description": "Generate a Unity Tilemap layout with AI and populate it via a C# Editor script. 2D only.",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": false,
+  "inputs": [
+    { "id": "name",         "type": "string", "label": "Level / map name",    "required": true,  "hint": "e.g. KitchenLevel, ForestCamp" },
+    { "id": "description",  "type": "string", "label": "Environment description","required": true, "hint": "What kind of place this is and its layout feel" },
+    { "id": "width",        "type": "string", "label": "Width (tiles)",       "required": false, "default": "20", "hint": "Tilemap width in tiles" },
+    { "id": "height",       "type": "string", "label": "Height (tiles)",      "required": false, "default": "15", "hint": "Tilemap height in tiles" },
+    { "id": "tilesetPath",  "type": "string", "label": "Tileset asset path",  "required": false, "hint": "e.g. Assets/Tiles/KitchenTiles.asset" },
+    { "id": "tileNames",    "type": "string", "label": "Tile names (CSV)",    "required": false, "hint": "e.g. Floor,Wall,Counter,Stove — used by AI as tile vocabulary" },
+    { "id": "llmProvider",  "type": "select", "label": "LLM provider",        "required": false, "default": "auto", "options": ["auto", "ollama", "gemini", "claude"] }
+  ],
+  "steps": [
+    { "id": "read_context",    "label": "Read game context",    "autoRun": true },
+    { "id": "generate_layout", "label": "Generate tile layout", "autoRun": true },
+    { "id": "generate_cs",     "label": "Generate C# populator","autoRun": true },
+    { "id": "unity_import",    "label": "Import into Unity",    "autoRun": true }
+  ],
+  "outputs": [
+    { "id": "scriptPath", "type": "string", "label": "C# Editor script path" },
+    { "id": "layoutPath", "type": "string", "label": "Layout JSON path" },
+    { "id": "tileCount",  "type": "int",    "label": "Total tiles placed" }
+  ]
+}

@@ -160,7 +160,8 @@ if __name__ == "__main__":
     parser.add_argument("--plugin",  required=True, help="Plugin ID (e.g. model_3d)")
     parser.add_argument("--project", required=True, help="Absolute path to Unity project root")
     parser.add_argument("--name",    required=True, help="Asset name (e.g. Sword)")
-    parser.add_argument("--image",   help="Image path (for model_3d)")
+    parser.add_argument("--image",   help="Image path (for model_3d, sprite_importer)")
+    parser.add_argument("--input",   help="JSON string with extra plugin inputs")
     parser.add_argument("--steps",   help="Comma-separated step IDs to run (default: all)")
     parser.add_argument("--resume",  action="store_true", help="Skip already completed steps")
     parser.add_argument("--run-id",  help="Run ID from ggm-fe for linking")
@@ -169,6 +170,12 @@ if __name__ == "__main__":
     inputs = {"name": args.name}
     if args.image:
         inputs["imagePath"] = args.image
+    if args.input:
+        try:
+            extra = json.loads(args.input)
+            inputs.update(extra)
+        except json.JSONDecodeError as e:
+            print(f"[Runner] Warning: could not parse --input JSON: {e}", file=sys.stderr)
 
     steps = args.steps.split(",") if args.steps else None
 

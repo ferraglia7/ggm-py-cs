@@ -1,0 +1,28 @@
+{
+  "id": "dialogue_generator",
+  "name": "Dialogue Generator",
+  "description": "Generate NPC dialogue in Yarn Spinner or Ink format using AI. Supports branching conversations with player choices.",
+  "runtime": "python",
+  "supports2D": true,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",         "type": "string", "label": "Dialogue file name",  "required": true,  "hint": "e.g. ShopkeeperIntro, BossEncounter" },
+    { "id": "npcName",      "type": "string", "label": "NPC name",            "required": true,  "hint": "Name of the character speaking" },
+    { "id": "description",  "type": "string", "label": "Scene description",   "required": true,  "hint": "What this conversation is about, when it triggers" },
+    { "id": "format",       "type": "select", "label": "Dialogue format",     "required": false, "default": "yarn",   "options": ["yarn", "ink"] },
+    { "id": "branches",     "type": "boolean","label": "Include player choices","default": true },
+    { "id": "mood",         "type": "string", "label": "NPC mood / tone",     "required": false, "hint": "e.g. friendly, suspicious, angry, mysterious" },
+    { "id": "llmProvider",  "type": "select", "label": "LLM provider",        "required": false, "default": "auto",   "options": ["auto", "ollama", "claude", "gemini"] }
+  ],
+  "steps": [
+    { "id": "read_context",      "label": "Read game context",      "autoRun": true },
+    { "id": "design_structure",  "label": "Design conversation tree","autoRun": true },
+    { "id": "generate_dialogue", "label": "Generate dialogue",      "autoRun": true },
+    { "id": "unity_import",      "label": "Import into Unity",      "autoRun": true }
+  ],
+  "outputs": [
+    { "id": "filePath",    "type": "string", "label": "Unity file path" },
+    { "id": "lineCount",   "type": "int",    "label": "Dialogue lines" },
+    { "id": "format",      "type": "string", "label": "Format (yarn/ink)" }
+  ]
+}

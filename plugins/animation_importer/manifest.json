@@ -1,0 +1,26 @@
+{
+  "id": "animation_importer",
+  "name": "Animation Importer",
+  "description": "Organize Mixamo FBX animations into Unity: copy to Assets, configure rig settings, and generate an AnimatorController setup script. 3D only.",
+  "runtime": "python",
+  "supports2D": false,
+  "supports3D": true,
+  "inputs": [
+    { "id": "name",              "type": "string",  "label": "Character name",      "required": true,  "hint": "e.g. Hero, Enemy_Goblin" },
+    { "id": "fbxFolder",         "type": "string",  "label": "FBX folder path",     "required": true,  "hint": "Absolute path to folder with downloaded Mixamo FBX files" },
+    { "id": "characterType",     "type": "select",  "label": "Character rig type",  "required": false, "default": "Humanoid", "options": ["Humanoid", "Generic"] },
+    { "id": "generateAnimator",  "type": "boolean", "label": "Generate Animator Controller script", "default": true },
+    { "id": "outputPath",        "type": "string",  "label": "Unity output path",   "required": false, "default": "Assets/Animations/Characters/", "hint": "Destination in Unity project" }
+  ],
+  "steps": [
+    { "id": "scan_fbx",          "label": "Scan FBX folder",               "autoRun": true },
+    { "id": "copy_fbx",          "label": "Copy FBX to Unity",             "autoRun": true },
+    { "id": "generate_animator", "label": "Generate AnimatorController",   "autoRun": true },
+    { "id": "unity_import",      "label": "Write import triggers",         "autoRun": true }
+  ],
+  "outputs": [
+    { "id": "animationPaths", "type": "json",   "label": "Imported FBX paths" },
+    { "id": "animatorPath",   "type": "string", "label": "Animator script path" },
+    { "id": "clipCount",      "type": "int",    "label": "Animation clips imported" }
+  ]
+}
